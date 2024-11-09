@@ -1,3 +1,5 @@
+let totalFilesSelected = 0;
+
 document.addEventListener('DOMContentLoaded', function() {
 
   // Eye visibility toggle for password field
@@ -164,6 +166,27 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
+     //file validation
+    const uploadInput = document.getElementById('upload');
+
+    if(uploadInput){
+      uploadInput.addEventListener('change', function(){
+        const files = uploadInput.files;
+        const fileConstraints = document.getElementById('file-constraints');
+        
+        if (validateFiles(files)) {
+            
+            const fileNames = Array.from(files).map(file => file.name).join(', ');
+
+            
+            displayFileList(files);
+        } else {
+            
+            fileConstraints.textContent = 'ไม่เกิน 100KB/ไฟล์';
+        }
+      });
+    }
+     
 
      const submitForm = document.getElementById('requestform');
 
@@ -237,4 +260,74 @@ function submitLogin() {
     .catch(error => {
       console.error('Error:', error);
     });
+}
+
+
+function validateFiles(files) {
+  const maxFiles = 5;
+  const validFileTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg']; // MIME types for PDF, PNG, JPG, JPEG
+
+  
+  totalFilesSelected += files.length;
+
+  
+  if (totalFilesSelected > maxFiles) {
+      Swal.fire({
+          icon: 'error',
+          title: 'จำนวนไฟล์เกินกำหนด',
+          text: `คุณสามารถอัปโหลดไฟล์ได้ไม่เกิน ${maxFiles} ไฟล์เท่านั้น`
+      });
+      totalFilesSelected -= files.length; 
+      return false;
+  }
+
+  
+  for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const fileSizeInKB = file.size / 1024;  
+
+      
+      if (!validFileTypes.includes(file.type)) {
+          Swal.fire({
+              icon: 'error',
+              title: 'ประเภทไฟล์ไม่รองรับ',
+              text: `ไฟล์ที่เลือกต้องเป็น PDF, PNG, JPG หรือ JPEG เท่านั้น (ไฟล์ที่เลือก: ${file.name})`
+          });
+          totalFilesSelected -= files.length; 
+          return false;
+      }
+
+      const maxFileSizeKB = 100; 
+
+      
+      if (fileSizeInKB > maxFileSizeKB) {
+          Swal.fire({
+              icon: 'error',
+              title: 'ขนาดไฟล์เกินกำหนด',
+              text: `ขนาดไฟล์ "${file.name}" เกิน 100KB`
+          });
+          totalFilesSelected -= files.length;
+          return false;
+      }
+  }
+
+  return true;
+}
+
+function resetFileCount() {
+  totalFilesSelected = 0;
+}
+
+
+function displayFileList(files) {
+
+  const fileListContainer = document.getElementById('file-list-container'); 
+
+  console.log("Files selected:", files); 
+
+  Array.from(files).forEach(file => {
+      const listItem = document.createElement('li'); 
+      listItem.textContent = file.name;
+      fileListContainer.appendChild(listItem); 
+  });
 }

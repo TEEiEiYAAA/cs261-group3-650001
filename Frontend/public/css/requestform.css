@@ -566,3 +566,20 @@ body{
     background: rgb(49, 122, 90);
 }
 
+#file-list-container {
+    list-style-type: none;
+    display: flex;
+    padding: 0;
+    margin-left: 20px;
+    max-height: 300px; 
+    overflow-y: auto;  
+    background-color: rgba(217, 217, 217, 1);
+    border-radius: 8px;
+    border: none;
+}
+
+#file-list-container li {
+    padding: 8px 10px;
+    margin-left: 4px;
+    background-color: rgba(217, 217, 217, 1);
+}
