@@ -1,5 +1,6 @@
 *{
-    margin: 0px;
+    margin: 0;
+
 }
 
 body{
@@ -582,4 +583,92 @@ body{
     padding: 8px 10px;
     margin-left: 4px;
     background-color: rgba(217, 217, 217, 1);
+}
+
+.history-container{
+    border: 3px solid black;
+    margin-top: 60px;
+    width: 180vh;
+    margin-left: 60px;
+    display: flex;
+    justify-content: center;
+    background: white;
+    border: none;
+    border-radius: 20px;
+    overflow-y: auto;
+    box-shadow: 100px 4px 5px 100px rgba(0, 0, 0, 0.71);
+    -webkit-box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.71);
+    -moz-box-shadow: 100px 4px 5px 0px rgba(0, 0, 0, 0.71);
+
+}
+
+.myrequest-container{
+    /*border: 3px solid blue;*/
+    height: 76vh;
+    width: 80vh;
+    
+}
+
+.title{
+    text-align: center;
+    margin-top: 20px;
+    font-size: 2em;
+    font-weight: 600;
+}
+
+.request-list{
+    border: 3px solid black;
+    height: 14vh;
+    border-radius: 20px;
+    margin-top: 30px;
+    background: rgba(217, 217, 217, 1);
+    border: none;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s ease-out;
+}
+
+.request-list:hover{
+    background: rgb(224, 224, 224);
+    transform: scale(1.08);
+}
+
+.request-list-left{
+    font-size: 20px;
+    font-weight: 600;
+    margin-left: 20px;
+}
+
+.request-list-right{
+    margin-left: auto;
+    margin-right: 26px;
+}
+
+.submit-date-time{
+    display: flex;
+    align-items: center;
+    margin-top: 6px;
+}
+
+.submit-date-time-right{
+    margin-left: 2px;
+    margin-top: 2px;
+}
+
+.request-list-right button{
+    padding: 10px;
+    font-size: 20px;
+    border-radius: 20px;
+    width: 16vh;
+    text-align: center;
+    border: none;
+    color: white;
+    background: rgba(225, 96, 96, 1);
+    cursor: pointer;
+
+}
+
+.request-list-right button:hover{
+    background: rgb(187, 65, 65);
 }

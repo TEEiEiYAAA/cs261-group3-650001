@@ -120,6 +120,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
       }
 
+      const selectedOption = hideFields.options[hideFields.selectedIndex];
+      const selectText = selectedOption.textContent;
+
+      localStorage.setItem('selectSaveText',selectText);
+
     });
   }
 
@@ -187,7 +192,6 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
      
-
      const submitForm = document.getElementById('requestform');
 
      if(submitForm){
@@ -197,8 +201,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
           console.log("Form has been submitted successfully.");
 
+          formSubmission();
+
          })
      }
+
+     //load requests on my request page
+     const historyContainer = document.querySelector('.history-container');
+
+     if(historyContainer){
+      loadRequests();
+     }
+
 
 });
 
@@ -330,4 +344,81 @@ function displayFileList(files) {
       listItem.textContent = file.name;
       fileListContainer.appendChild(listItem); 
   });
+}
+
+function formSubmission(){
+  
+  const savedText = localStorage.getItem('selectSaveText');
+
+  const timeStamp = new Date().toLocaleString();
+
+  const userNameTh = localStorage.getItem('displayname_th');
+
+  let requests = JSON.parse(localStorage.getItem(`requests_${userNameTh}`)) || [];
+  requests.push({savedText, timeStamp});
+  localStorage.setItem(`requests_${userNameTh}`, JSON.stringify(requests));
+
+  console.log(savedText);
+  console.log(timeStamp);
+  
+  Swal.fire({
+                    
+    icon: "success",
+    title: "Successfully Submitted",
+    text: "Your form has been successfully submitted",
+    showConfirmButton: false
+
+  });
+  setTimeout(function() {
+  window.location.href = "myrequest.html";
+  }, 1000);
+
+}
+
+function loadRequests(){
+  const userNameTh = localStorage.getItem('displayname_th');
+  const requests = JSON.parse(localStorage.getItem(`requests_${userNameTh}`)) || [];
+  const myRequestContainer = document.querySelector('.myrequest-container');
+
+  requests.forEach((item) => {
+
+    const myrequest = document.createElement('div');
+    myrequest.classList.add('request-list');
+    myRequestContainer.appendChild(myrequest);
+
+    const requestListLeft = document.createElement('div');
+    requestListLeft.classList.add('request-list-left');
+    myrequest.appendChild(requestListLeft);
+
+    const requestListRight = document.createElement('div');
+    requestListRight.classList.add('request-list-right');
+    myrequest.appendChild(requestListRight);
+
+    const requestName = document.createElement('div');
+    requestName.classList.add('request-name');
+    requestListLeft.appendChild(requestName);
+    requestName.textContent = `${item.savedText}`;
+
+    const submitDateTime = document.createElement('div');
+    submitDateTime.classList.add('submite-date-time');
+    requestListLeft.appendChild(submitDateTime);
+
+    const submitDateTimeLeft = document.createElement('div');
+    submitDateTimeLeft.classList.add('submit-date-time-left');
+    submitDateTime.appendChild(submitDateTimeLeft);
+    submitDateTimeLeft.textContent = `วันยื่นเรื่อง:`;
+
+    const submitDateTimeRight = document.createElement('div');
+    submitDateTimeRight.classList.add('submit-date-time-right');
+    submitDateTime.appendChild(submitDateTimeRight);
+    submitDateTimeRight.textContent = `${item.timeStamp}`;
+
+    const cancelButton = document.createElement('button');
+    cancelButton.setAttribute('id','cancel-button');
+    requestListRight.appendChild(cancelButton);
+    cancelButton.textContent = `ยกเลิก`;
+
+
+  })
+
 }
