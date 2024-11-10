@@ -380,7 +380,13 @@ function loadRequests(){
   const requests = JSON.parse(localStorage.getItem(`requests_${userNameTh}`)) || [];
   const myRequestContainer = document.querySelector('.myrequest-container');
 
-  requests.forEach((item) => {
+  const title = myRequestContainer.querySelector('.title');
+
+  myRequestContainer.innerHTML = '';
+
+  myRequestContainer.appendChild(title);  
+
+  requests.forEach((item, index) => {
 
     const myrequest = document.createElement('div');
     myrequest.classList.add('request-list');
@@ -417,6 +423,28 @@ function loadRequests(){
     cancelButton.setAttribute('id','cancel-button');
     requestListRight.appendChild(cancelButton);
     cancelButton.textContent = `ยกเลิก`;
+
+    
+    cancelButton.addEventListener('click', () => {
+      Swal.fire({
+          title: "Are you sure you want to cancel this request?",
+          showDenyButton: true,
+          showCancelButton: false,
+          confirmButtonText: "Yes",
+          denyButtonText: `No`
+        }).then((result) => {
+          
+          if (result.isConfirmed) {
+            Swal.fire("The request has been successfully canceled.", "", "success");
+            
+            requests.splice(index, 1); 
+            localStorage.setItem(`requests_${userNameTh}`, JSON.stringify(requests));
+            
+            loadRequests();
+          }
+        });
+
+    });
 
 
   })
