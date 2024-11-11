@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
-     //file validation
+    //file validation
     const uploadInput = document.getElementById('upload');
 
     if(uploadInput){
@@ -213,6 +213,29 @@ document.addEventListener('DOMContentLoaded', function() {
       loadRequests();
      }
 
+     //logout button
+     const logoutButton = document.getElementById('logout-button');
+
+     if(logoutButton){
+      logoutButton.addEventListener('click', function(){
+        Swal.fire({
+          title: "คุณต้องการที่จะออกจากระบบ?",
+          showDenyButton: true,
+          showCancelButton: false,
+          confirmButtonText: "Logout",
+          denyButtonText: `Cancel`
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire("ออกจากระบบสําเร็จ", "", "success");
+            localStorage.removeItem('displayname_th');
+            setTimeout(function() {
+              window.location.href = "login.html";
+            }, 600);
+          }
+        });
+      })
+     }
+
 
 });
 
@@ -247,8 +270,8 @@ function submitLogin() {
         Swal.fire({
                     
           icon: "success",
-          title: "Logged in",
-          text: "Successfully Logged in",
+          title: "ล็อคอินสําเสร็จ",
+          text: "เข้าสู่ระบบการยื่นคําร้องสําเร็จ",
           showConfirmButton: false
       
       });
@@ -264,8 +287,8 @@ function submitLogin() {
 
         Swal.fire({
           icon: "error",
-          title: data.message,
-          text: "Logged in Failed!!!!",
+          title: "ล็อคอินไม่สําเร็จ",
+          text: "ไม่สามารถล็อคอินเข้าสู่ระบบได้",
           showConfirmButton: false
         });
 
@@ -364,8 +387,8 @@ function formSubmission(){
   Swal.fire({
                     
     icon: "success",
-    title: "Successfully Submitted",
-    text: "Your form has been successfully submitted",
+    title: "ยื่นคําร้องสําเร็จ",
+    text: "คําร้องของคุณถูกยื่นสําเร็จเเล้ว",
     showConfirmButton: false
 
   });
@@ -427,7 +450,7 @@ function loadRequests(){
     
     cancelButton.addEventListener('click', () => {
       Swal.fire({
-          title: "Are you sure you want to cancel this request?",
+          title: "คุณต้องการที่จะยกเลิกคําร้อง?",
           showDenyButton: true,
           showCancelButton: false,
           confirmButtonText: "Yes",
@@ -435,7 +458,7 @@ function loadRequests(){
         }).then((result) => {
           
           if (result.isConfirmed) {
-            Swal.fire("The request has been successfully canceled.", "", "success");
+            Swal.fire("คําร้องของคุณได้ถูกยกเลิกเเล้ว", "", "success");
             
             requests.splice(index, 1); 
             localStorage.setItem(`requests_${userNameTh}`, JSON.stringify(requests));
