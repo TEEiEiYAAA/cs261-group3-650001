@@ -267,6 +267,7 @@ function submitLogin() {
       if (data.status) {
         console.log(data.message)
         console.log('Login Response:', data);
+        localStorage.setItem('displayname_th', data.displayname_th);
         Swal.fire({
                     
           icon: "success",
