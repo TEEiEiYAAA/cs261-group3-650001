@@ -3,24 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Request Form Page</title>
-    <link rel="stylesheet" href="css/requestform.css">
+    <title>Professor Detail Page</title>
+    <link rel="stylesheet" href="css/professor.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=K2D:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=K2D:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
     <script src="js/script.js" defer></script>
 </head>
 <body>
     <div class="nav-bar">
         <div class="nav-bar-left">
             <img src="img/tu-logo.png" height="80" width="80px">
-            <a href="#"><p>ยื่นคําร้อง</p></a>
-            <img src="img/whiteline.png" height="80">
-            <a href="myrequest.html"><p>ตรวจสอบประวัติ</p></a>
+            <a href="professordashboard.html"><p>คําร้องของนักศึกษา</p></a>
         </div>
         <div class="nav-bar-right">
             <img src="img/student.webp" height="40px" width="60px">
-            <div class="welcome-name">
+            <div class="lecturer-name">
                 
             </div>
             <button id="logout-button">Logout</button> 
@@ -28,6 +26,7 @@
     </div>
     <div class="form-container">
         <form id="requestform">
+            <!--header-->
             <div class="header">
                 <h1>ยื่นคําร้องสําหรับนักศึกษา</h1>
             </div>
@@ -82,33 +81,26 @@
             <div class="third-line">
                 <div class="topic">
                     <label for="request-topic">ประสงค์จะยื่นคําร้องเรื่อง</label>
-                    <select id="request-topic" name="topic">
-                        <option value="" disabled selected>เลือกเรื่องที่ประสงค์จะยื่นคําร้อง</option>
-                        <option value="late-registration">จดทะเบียนล่าช้า / เพิ่มถอนล่าช้า</option>
-                        <option value="drop-w">ขอถอนวิชา / ถอนรายวิชา (Drop W)</option>
-                        <option value="cross-program">ขอจดทะเบียนศึกษารายวิชาข้ามหลักสูตร</option>
-                        <option value="resignation">ขอลาออก</option>
-                        <option value="other">อื่นๆ</option>
-                    </select>
+                    <input for="request-topic" id="request-topic-input" readonly>
                 </div>
             </div>
             <div id="common-fields">
                 <div class="semester">
                     <label for="semester-input">ภาคเรียนที่</label>
-                    <input type="text" id="semester-input" required/>
+                    <input type="text" id="semester-input"/>
                 </div>
                 <div class="common-second-line">
                     <div class="subject-id">
                         <label for="subject-id-input">รหัสวิชา</label>
-                        <input type="text" id="subject-id-input" required/>                        
+                        <input type="text" id="subject-id-input"/>                        
                     </div>
                     <div class="subject-name">
                         <label for="subject-name-input">ชื่อวิชา</label>
-                        <input type="text" id="subject-name-input" required/>
+                        <input type="text" id="subject-name-input"/>
                     </div>
                     <div class="section">
                         <label for="section-input">Section</label>
-                        <input type="text" id="section-input" required/>
+                        <input type="text" id="section-input"/>
                     </div>
                 </div>
             </div>
@@ -128,11 +120,11 @@
                 </div>
                 <div class="resignation-fourth-line">
                     <div class="no-outstanding-debt">
-                        <input type="checkbox" id="no-outstanding-debt-checkbox" name="no-outstanding-debt-checkbox" value="no">
+                        <input type="checkbox" id="no-outstanding-debt-checkbox" name="no-outstanding-debt-checkbox" value="no" readonly>
                         <label for="no-outstanding-debt-checkbox">ไม่มีภาระหนี้สินคงค้าง</label>
                     </div> 
                     <div class="outstanding-debt">
-                        <input type="checkbox" id="outstanding-debt-checkbox" name="outstanding-debt-checkbox" value="yes">
+                        <input type="checkbox" id="outstanding-debt-checkbox" name="outstanding-debt-checkbox" value="yes" readonly>
                         <label for="outstanding-debt-checkbox">มีภาระหนี้สินคงค้าง</label>
                     </div>
                     <div class="amount">
@@ -141,7 +133,6 @@
                         <label>บาท</label>
                     </div>
                 </div>
-
             </div>
             <div id="other-fields" class="hidden">
                 <textarea placeholder="โปรดระบุ" id="other-input"></textarea>
@@ -155,9 +146,8 @@
                     <textarea required id="reason-input"></textarea>
                 </div>
             </div>
-
             <div class="end-message">
-                <div class="end-message-first">
+                <div class="end-message-first" >
                     จึงเรียนมาเพื่อโปรดพิจารณาอนุมัติดําเนินการต่อไปด้วย จักเป็นพระคุณยิ่ง
                 </div>
                 <div class="end-message-second">
@@ -169,7 +159,7 @@
                     ความเห็นอาจารย์ที่ปรึกษา
                 </div>
                 <div class="lecturer-reason-area">
-                    <textarea id="lecturer-input" readonly></textarea>
+                    <textarea id="lecturer-input"></textarea>
                 </div>
             </div>
             <div class="file-submit">
@@ -181,10 +171,7 @@
                 <div id="file-list-container">
                     
                 </div>
-                <button type="button" id="save-button-requestform">SAVE</button>
-                <button type="submit" id="submit-button-requestform">ยื่นคําร้อง</button>
             </div>
-
         </form>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.3/dist/sweetalert2.all.min.js"></script>
