@@ -235,6 +235,13 @@ document.addEventListener('DOMContentLoaded', function() {
       //loadRequests();
       loadRequestsTest();
      }
+
+     //load requests on professordashboard page
+     const historyContainerLecturer = document.querySelector('.history-container-lecturer');
+
+     if(historyContainerLecturer){
+      loadRequestsLecturer();
+     }
      
      //logout button for all page
      const logoutButton = document.getElementById('logout-button');
@@ -271,6 +278,11 @@ document.addEventListener('DOMContentLoaded', function() {
      //check if we are on the requestdetails page
      if(window.location.pathname.includes('requestdetails.html')){
       getRequestDetails();
+     }
+
+     //check if we are on the professordetails page
+     if(window.location.pathname.includes('professordetails.html')){
+      getRequestDetailsProfessor();
      }
      
 });
@@ -777,6 +789,71 @@ function loadRequestsTest(){
   })
 }
 
+//load request on professordashboard page(view)
+function loadRequestsLecturer(){
+  const lecturerUserName = localStorage.getItem('username');
+  const myRequestContainerLecturer = document.querySelector('.myrequest-container-lecturer');
+  fetch(`http://localhost:8080/requests/lecturerUserName/${lecturerUserName}`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+  }) //fetch
+  .then(response => response.json())
+  .then(data => {
+    const titleLecturer = myRequestContainerLecturer.querySelector('.title-lecturer');
+
+    myRequestContainerLecturer.innerHTML = '';
+
+    myRequestContainerLecturer.appendChild(titleLecturer);
+
+    data.forEach((item, index) => {
+    const myrequest = document.createElement('div');
+    myrequest.classList.add('request-list');
+    myRequestContainerLecturer.appendChild(myrequest);
+
+    const requestListLeft = document.createElement('div');
+    requestListLeft.classList.add('request-list-left');
+    myrequest.appendChild(requestListLeft);
+
+    const requestListRight = document.createElement('div');
+    requestListRight.classList.add('request-list-right');
+    myrequest.appendChild(requestListRight);
+
+    const requestName = document.createElement('div');
+    requestName.classList.add('request-name');
+    requestListLeft.appendChild(requestName);
+    requestName.textContent = `${item.requestTopic}`;
+
+    const requestStatus = document.createElement('div');
+    requestStatus.classList.add('request-status');
+    requestListLeft.appendChild(requestStatus);
+    requestStatus.textContent = `${item.studentUserName}`;
+
+    const submitDateTime = document.createElement('div');
+    submitDateTime.classList.add('submite-date-time');
+    requestListLeft.appendChild(submitDateTime);
+    submitDateTime.textContent = `${item.dateTime}`;
+
+    const viewButton = document.createElement('button');
+    viewButton.setAttribute('id','view-button-myrequest');
+    viewButton.dataset.requestId = item.id; //data-request-id
+    requestListRight.appendChild(viewButton);
+    viewButton.textContent = `view`;
+
+    viewButton.addEventListener('click', () => {
+      const requestId = viewButton.dataset.requestId;
+      window.location.href = `professordetails.html?id=${requestId}`;
+    })
+
+    }) //for each
+  }) //then
+  .catch(error => {
+    console.log('Error: ', error)
+  }) //catch
+
+}
+
 //view request details on requestdetails page
 function getRequestDetails(){
   const urlParams = new URLSearchParams(window.location.search);
@@ -803,6 +880,100 @@ function getRequestDetails(){
 
   submitButton.addEventListener('click', () => {
     updateRequestBySubmit(requestId);
+  })
+  
+  fetch(`http://localhost:8080/requests/id/${requestId}`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log(data)
+    document.getElementById('subject-input').value = data.subject;
+    document.getElementById('dear-input').value = data.recipient;
+    document.getElementById('name-input').value = data.name;
+    document.getElementById('student-id-input').value = data.studentId;
+    document.getElementById('academicyear-input').value = data.academicYear;
+    document.getElementById('department-input').value = data.department;
+    document.getElementById('address-input').value = data.address;
+    document.getElementById('district-input').value = data.district;
+    document.getElementById('region-input').value = data.region;
+    document.getElementById('province-input').value = data.province;
+    document.getElementById('request-topic-input').value = data.requestTopic;
+    if(data.requestValue === "late-registration" || data.requestValue === "drop-w" || data.requestValue === "cross-program"){
+      console.log("Hello");
+      document.getElementById("resignation-fields").classList.add("hidden");
+      document.getElementById("other-fields").classList.add("hidden");
+    }
+
+    if(data.requestValue === "resignation"){
+      console.log("Hello2");
+      document.getElementById("resignation-fields").classList.remove("hidden");
+      document.getElementById("common-fields").classList.add("hidden");
+      document.getElementById("other-fields").classList.add("hidden");
+    }  
+
+    if(data.requestValue === "other"){
+     console.log("Hello3");
+     document.getElementById("other-fields").classList.remove("hidden");
+     document.getElementById("common-fields").classList.add("hidden");
+     document.getElementById("resignation-fields").classList.add("hidden");
+    }
+    document.getElementById('semester-input').value = data.semester;
+    document.getElementById('subject-id-input').value = data.subjectId;
+    document.getElementById('subject-name-input').value = data.subjectName;
+    document.getElementById('section-input').value = data.section;
+    document.getElementById('subject-id-input-resignation').value = data.resignSemester;
+    document.getElementById('subject-name-input-resignation').value = data.resignYear;
+    if(data.noDebt === "true"){
+      document.getElementById('no-outstanding-debt-checkbox').checked = true;
+      document.getElementById('outstanding-debt-checkbox').checked = false;
+    }
+    if(data.debt === "true"){
+      document.getElementById('no-outstanding-debt-checkbox').checked = false;
+      document.getElementById('outstanding-debt-checkbox').checked = true;
+      document.getElementById('amount-input').value = data.debtAmount;
+    }
+    document.getElementById('amount-input').value = data.debtAmount;
+    document.getElementById('other-input').value = data.other;
+    document.getElementById('reason-input').value = data.reason;
+    document.getElementById('lecturer-input').value = data.lecturerReason;
+
+
+  })
+  .catch(error => {
+    console.log('Error: ', error)
+  })
+}
+
+//view request details on professordetails page
+function getRequestDetailsProfessor(){
+  const urlParams = new URLSearchParams(window.location.search);
+  const requestId = urlParams.get('id');
+  const fileSubmit = document.querySelector('.file-submit');
+  
+  const rejectButton = document.createElement('button');
+  rejectButton.textContent = `ไม่อนุมัติ`;
+  rejectButton.dataset.requestId = requestId;
+  rejectButton.setAttribute('id', 'reject-button-professordetails');
+  rejectButton.setAttribute('type', 'button');
+  fileSubmit.appendChild(rejectButton);
+
+  const approveButton = document.createElement('button');
+  approveButton.textContent = `อนุมัติ`;
+  approveButton.dataset.requestId = requestId;
+  approveButton.setAttribute('id', 'approve-button-professordetails');
+  approveButton.setAttribute('type', 'button');
+  fileSubmit.appendChild(approveButton);
+
+  rejectButton.addEventListener('click', () => {
+    rejectRequest(requestId);
+  })
+
+  approveButton.addEventListener('click', () => {
+    approveRequest(requestId);
   })
   
   fetch(`http://localhost:8080/requests/id/${requestId}`, {
@@ -1049,4 +1220,92 @@ function updateRequestBySubmit(requestId){
    window.location.href = "myrequest.html";
    }, 1000);
   
+}
+
+//approve request
+function approveRequest(requestId){
+  const studentUserName = localStorage.getItem('studentUserName');
+  const dateTime = new Date().toLocaleString();
+  const subjectInput = document.getElementById('subject-input').value;
+  const dearInput = document.getElementById('dear-input').value;
+  const nameInput = document.getElementById('name-input').value;
+  const studentIdInput = document.getElementById('student-id-input').value;
+  const academicYearInput = document.getElementById('academicyear-input').value;
+  const departmentInput = document.getElementById('department-input').value;
+  const addressInput = document.getElementById('address-input').value;
+  const districtInput = document.getElementById('district-input').value;
+  const regionInput = document.getElementById('region-input').value;
+  const provinceInput = document.getElementById('province-input').value;
+  const selectedTopic = localStorage.getItem('selectedTopic');
+  const requestTopic = localStorage.getItem('selectSaveText');
+  const semesterInput = document.getElementById('semester-input').value;
+  const subjectIdInput = document.getElementById('subject-id-input').value;
+  const subjectNameInput = document.getElementById('subject-name-input').value;
+  const sectionInput = document.getElementById('section-input').value;
+  const subjectIdInputResignation = document.getElementById('subject-id-input-resignation').value;
+  const subjectNameInputResignation = document.getElementById('subject-name-input-resignation').value;
+  const noOutstandingDebtCheckbox = document.getElementById('no-outstanding-debt-checkbox').checked;
+  const outstandingDebtCheckbox = document.getElementById('outstanding-debt-checkbox').checked;
+  const amountInput = document.getElementById('amount-input').value;
+  const otherInput = document.getElementById('other-input').value;
+  const reasonInput = document.getElementById('reason-input').value;
+  const lecturerInput = document.getElementById('lecturer-input').value;
+
+   const request = {
+    studentUserName: studentUserName,
+    lecturerUserName: "APPROVE",
+    status: "APPROVED BY LECTURER",
+    dateTime: dateTime,
+    subject: subjectInput,
+    recipient: dearInput,
+    name: nameInput,
+    studentId: studentIdInput,
+    academicYear: academicYearInput,
+    department: departmentInput,
+    address: addressInput,
+    district: districtInput,
+    region: regionInput,
+    province: provinceInput,
+    requestValue: selectedTopic,
+    requestTopic: requestTopic,
+    semester: semesterInput,
+    subjectId: subjectIdInput,
+    subjectName: subjectNameInput,
+    section: sectionInput,
+    resignSemester: subjectIdInputResignation,
+    resignYear: subjectNameInputResignation,
+    noDebt: noOutstandingDebtCheckbox,
+    debt: outstandingDebtCheckbox,
+    debtAmount: amountInput,
+    other: otherInput,
+    reason: reasonInput,
+    lecturerReason: lecturerInput
+   }
+
+   fetch(`http://localhost:8080/requests/${requestId}`, {
+    method: 'PUT',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(request)
+   })
+   .then(response => response.json())
+   .then(data => {
+    console.log(data)
+   })
+   .catch(error => {
+    console.log('Error: ', error)
+   })
+
+   Swal.fire({
+                    
+    icon: "success",
+    title: "Successfully Submitted",
+    text: "Your form has been successfully submitted",
+    showConfirmButton: false
+
+   });
+   setTimeout(function() {
+   window.location.href = "professordashboard.html";
+   }, 1000);
 }
