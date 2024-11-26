@@ -249,14 +249,14 @@ document.addEventListener('DOMContentLoaded', function() {
      if(logoutButton){
       logoutButton.addEventListener('click', function(){
         Swal.fire({
-          title: "Are you sure you want to log out?",
+          title: "คุณต้องการที่จะออกจากระบบ?",
           showDenyButton: true,
           showCancelButton: false,
           confirmButtonText: "Logout",
           denyButtonText: `Cancel`
         }).then((result) => {
           if (result.isConfirmed) {
-            Swal.fire("You have successfully logged out.", "", "success");
+            Swal.fire("คุณได้ออกจากระบบสําเร็จเเล้ว", "", "success");
             localStorage.removeItem('displayname_th');
             setTimeout(function() {
               window.location.href = "login.html";
@@ -348,8 +348,8 @@ function submitLogin() {
           Swal.fire({
                       
             icon: "success",
-            title: "Logged in",
-            text: "Successfully Logged in",
+            title: "ล็อกอินสําเร็จ",
+            text: "ล็อกอินเข้าสู่ระบบสําเร็จ",
             showConfirmButton: false
         
           });
@@ -364,8 +364,8 @@ function submitLogin() {
   
           Swal.fire({
             icon: "error",
-            title: data.message,
-            text: "Logged in Failed!!!!",
+            title: "username หรือ password ไม่ถูกต้อง",
+            text: "เข้าสู่ระบบไม่สําเร็จ",
             showConfirmButton: false
           });
   
@@ -407,8 +407,8 @@ function submitLogin() {
     Swal.fire({
                       
       icon: "success",
-      title: "Logged in",
-      text: "Successfully Logged in",
+      title: "ล็อกอินสําเร็จ",
+      text: "ล็อกอินเข้าสู่ระบบสําเร็จ",
       showConfirmButton: false
   
     });
@@ -566,8 +566,8 @@ function formSubmissionTest(){
    Swal.fire({
                     
     icon: "success",
-    title: "Successfully Submitted",
-    text: "Your form has been successfully submitted",
+    title: "ยื่นคําร้องสําเร็จ",
+    text: "คําร้องของคุณอยู่ในขั้นตอนการดําเนินการ",
     showConfirmButton: false
 
    });
@@ -657,8 +657,8 @@ function saveFormSubmission(){
    Swal.fire({
                     
     icon: "success",
-    title: "Successfully Saved",
-    text: "Your form has been successfully saved",
+    title: "บันทึกคําร้องสําเร็จ",
+    text: "คําร้องของคุณได้ถูกบันทึกเเล้ว",
     showConfirmButton: false
 
    });
@@ -1120,8 +1120,8 @@ function updateRequestBySave(requestId){
    Swal.fire({
                     
     icon: "success",
-    title: "Successfully Saved",
-    text: "Your form has been successfully saved",
+    title: "บันทึกคําร้องสําเร็จ",
+    text: "คําร้องของคุณได้ถูกบันทึกเเล้ว",
     showConfirmButton: false
 
    });
@@ -1211,8 +1211,8 @@ function updateRequestBySubmit(requestId){
    Swal.fire({
                     
     icon: "success",
-    title: "Successfully Submitted",
-    text: "Your form has been successfully submitted",
+    title: "ยื่นคําร้องสําเร็จ",
+    text: "คําร้องของคุณอยู่ในขั้นตอนการดําเนินการ",
     showConfirmButton: false
 
    });
@@ -1220,6 +1220,95 @@ function updateRequestBySubmit(requestId){
    window.location.href = "myrequest.html";
    }, 1000);
   
+}
+
+//reject request
+function rejectRequest(requestId){
+  const studentUserName = localStorage.getItem('studentUserName');
+  const lecturerUserName = localStorage.getItem('lecturerUserName');
+  const dateTime = new Date().toLocaleString();
+  const subjectInput = document.getElementById('subject-input').value;
+  const dearInput = document.getElementById('dear-input').value;
+  const nameInput = document.getElementById('name-input').value;
+  const studentIdInput = document.getElementById('student-id-input').value;
+  const academicYearInput = document.getElementById('academicyear-input').value;
+  const departmentInput = document.getElementById('department-input').value;
+  const addressInput = document.getElementById('address-input').value;
+  const districtInput = document.getElementById('district-input').value;
+  const regionInput = document.getElementById('region-input').value;
+  const provinceInput = document.getElementById('province-input').value;
+  const selectedTopic = localStorage.getItem('selectedTopic');
+  const requestTopic = localStorage.getItem('selectSaveText');
+  const semesterInput = document.getElementById('semester-input').value;
+  const subjectIdInput = document.getElementById('subject-id-input').value;
+  const subjectNameInput = document.getElementById('subject-name-input').value;
+  const sectionInput = document.getElementById('section-input').value;
+  const subjectIdInputResignation = document.getElementById('subject-id-input-resignation').value;
+  const subjectNameInputResignation = document.getElementById('subject-name-input-resignation').value;
+  const noOutstandingDebtCheckbox = document.getElementById('no-outstanding-debt-checkbox').checked;
+  const outstandingDebtCheckbox = document.getElementById('outstanding-debt-checkbox').checked;
+  const amountInput = document.getElementById('amount-input').value;
+  const otherInput = document.getElementById('other-input').value;
+  const reasonInput = document.getElementById('reason-input').value;
+  const lecturerInput = document.getElementById('lecturer-input').value;
+
+   const request = {
+    studentUserName: studentUserName,
+    lecturerUserName: "REJECT",
+    status: "REJECTED",
+    dateTime: dateTime,
+    subject: subjectInput,
+    recipient: dearInput,
+    name: nameInput,
+    studentId: studentIdInput,
+    academicYear: academicYearInput,
+    department: departmentInput,
+    address: addressInput,
+    district: districtInput,
+    region: regionInput,
+    province: provinceInput,
+    requestValue: selectedTopic,
+    requestTopic: requestTopic,
+    semester: semesterInput,
+    subjectId: subjectIdInput,
+    subjectName: subjectNameInput,
+    section: sectionInput,
+    resignSemester: subjectIdInputResignation,
+    resignYear: subjectNameInputResignation,
+    noDebt: noOutstandingDebtCheckbox,
+    debt: outstandingDebtCheckbox,
+    debtAmount: amountInput,
+    other: otherInput,
+    reason: reasonInput,
+    lecturerReason: lecturerInput
+   }
+
+   fetch(`http://localhost:8080/requests/${requestId}`, {
+    method: 'PUT',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(request)
+   })
+   .then(response => response.json())
+   .then(data => {
+    console.log(data)
+   })
+   .catch(error => {
+    console.log('Error: ', error)
+   })
+
+   Swal.fire({
+                    
+    icon: "success",
+    title: "ไม่อนุมัติคําร้องของนักศึกษาสําเร็จ",
+    text: "คําร้องของนักศึกษาจะถูกตีกลับ",
+    showConfirmButton: false
+
+   });
+   setTimeout(function() {
+   window.location.href = "professordashboard.html";
+   }, 1000);
 }
 
 //approve request
@@ -1300,8 +1389,8 @@ function approveRequest(requestId){
    Swal.fire({
                     
     icon: "success",
-    title: "Successfully Submitted",
-    text: "Your form has been successfully submitted",
+    title: "อนุมัติคําร้องของนักศึกษาสําเร็จ",
+    text: "คําร้องของนักศึกษาได้ถูกส่งไปยังขั้นตอนต่อไป",
     showConfirmButton: false
 
    });
