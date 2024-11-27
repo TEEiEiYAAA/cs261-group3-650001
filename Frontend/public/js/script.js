@@ -941,6 +941,12 @@ function getRequestDetails(){
     document.getElementById('reason-input').value = data.reason;
     document.getElementById('lecturer-input').value = data.lecturerReason;
 
+    /*added part*/
+    if(data.status === "WAITING FOR APPROVAL"){
+      saveButton.disabled = true;
+      submitButton.disabled = true;
+    }
+
 
   })
   .catch(error => {
