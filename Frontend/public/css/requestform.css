@@ -567,12 +567,12 @@ body{
     background: rgba(217, 217, 217, 1);
     border-radius: 14px;
     padding: 10px;
-    height: 8vh;
+    height: 10vh;
     font-size: 20px;
 }
 
 .file > *{
-    margin-bottom: 10px;
+    margin-bottom: 1px;
     cursor: pointer;
 }
 
@@ -581,12 +581,13 @@ body{
 }
 
 #file-constraints{
-    margin-left: 44px;
+    margin-left: 1px;
     color: rgb(97, 91, 91);
 }
 
 .file-submit #save-button-requestform{
     margin-left: 600px;
+    margin-right: 10px;
     font-size: 20px;
     border-radius: 14px;
     width: 20vh;
@@ -621,11 +622,10 @@ body{
 #file-list-container {
     list-style-type: none;
     display: flex;
-    flex-direction: column;
     padding: 0;
     margin-left: 20px;
     max-height: 300px; 
-    overflow-y: auto;  
+    overflow-x: auto;  
     background-color: rgba(217, 217, 217, 1);
     border-radius: 8px;
     border: none;
@@ -764,6 +764,7 @@ body{
 /*////////////////////requestdetails page///////////////////////////////*/
 .file-submit #save-button-requestdetails{
     margin-left: 600px;
+    margin-right: 10px;
     font-size: 20px;
     border-radius: 14px;
     width: 20vh;

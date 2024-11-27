@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function() {
             displayFileList(files);
         } else {
             
-            fileConstraints.textContent = 'ไม่เกิน 100KB/ไฟล์';
+            fileConstraints.textContent = 'ไม่เกิน 100KB';
         }
       });
     }
